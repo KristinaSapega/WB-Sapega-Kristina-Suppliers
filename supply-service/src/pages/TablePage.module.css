@@ -1,0 +1,24 @@
+.page {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    background-color: #2D2C32;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: var(--grid-right-max-width);
+    height: 912px;
+    padding: var(--grid-right-padding);
+    gap: var(--grid-right-gap);
+    overflow-y: auto;
+}
+
+.topRow {
+    display: flex;
+    align-items: center;
+    height: 92px;
+    padding-left: 12px;
+}
