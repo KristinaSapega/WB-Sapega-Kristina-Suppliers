@@ -4,11 +4,13 @@ import styles from "./DeliveryTable.module.css";
 import { useEffect, useState } from "react";
 import { getDeliveries } from "../../services/deliveries";
 import { Delivery } from "../../types/Delivery";
+import { DropdownMenu } from "../Dropdown/DropdownMenu";
 
 
 export const DeliveryTable = () => {
     const [deliveries, setDeliveries] = useState<Delivery[]>([])
     const [loading, setLoading] = useState(true)
+    const [dropdown, setDropdown] = useState<number | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -21,7 +23,7 @@ export const DeliveryTable = () => {
                 setLoading(false)
             }
         }
-        
+
         fetchData()
     }, [])
 
@@ -59,8 +61,20 @@ export const DeliveryTable = () => {
                     >
                         {item.status}
                     </div>
-                    <div className={styles.menu}>
-                        <FiMoreVertical />
+                    <div className={`${styles.menu} ${dropdown === item.id ? styles.active : ''}`}>
+                        <div onClick={() => setDropdown(item.id)}>
+                            <FiMoreVertical />
+                            {dropdown === item.id && (
+                                <DropdownMenu
+                                    onEdit={() => {
+                                        setDropdown(null)
+                                    }}
+                                    onDelete={() => {
+                                        setDropdown(null)
+                                    }}
+                                />
+                            )}
+                        </div>
                     </div>
                 </div>
             ))}

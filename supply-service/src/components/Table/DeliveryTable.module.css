@@ -72,3 +72,11 @@
   text-align: center;
 }
 
+.menu:hover,
+.menu.active {
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--colors-cloudy-alpha-008, #FFFFFF14);
+}

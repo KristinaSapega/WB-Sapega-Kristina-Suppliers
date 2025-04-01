@@ -1,16 +1,17 @@
 .page {
     display: flex;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     background-color: #2D2C32;
 }
 
 .content {
     display: flex;
     flex-direction: column;
+    max-width: 100%;
     width: 100%;
-    max-width: var(--grid-right-max-width);
     height: 912px;
+    overflow: hidden;
     padding: var(--grid-right-padding);
     gap: var(--grid-right-gap);
 }
