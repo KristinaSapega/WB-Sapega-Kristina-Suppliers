@@ -13,7 +13,6 @@
     height: 912px;
     padding: var(--grid-right-padding);
     gap: var(--grid-right-gap);
-    overflow-y: auto;
 }
 
 .topRow {

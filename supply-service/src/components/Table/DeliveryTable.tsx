@@ -21,12 +21,12 @@ export const DeliveryTable = () => {
                 setLoading(false)
             }
         }
-
+        
         fetchData()
     }, [])
 
     if (loading) return <p>Загрузка...</p>
-    
+
     return (
         <div className={styles.wrapper}>
             <div className={styles.header}>
