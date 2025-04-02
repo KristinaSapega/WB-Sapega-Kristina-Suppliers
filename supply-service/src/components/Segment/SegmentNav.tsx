@@ -1,4 +1,4 @@
-import styles from "./SegmentNav.module.css";
+import styles from "./SegmentNav.module.css"
 
 export const SegmentNav = () => {
     return (

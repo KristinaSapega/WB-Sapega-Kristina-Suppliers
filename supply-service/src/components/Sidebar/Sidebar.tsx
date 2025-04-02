@@ -1,5 +1,5 @@
-import styles from './Sidebar.module.css';
-import logo from '../../assets/logo.svg';
+import styles from "./Sidebar.module.css"
+import logo from "../../assets/logo.svg"
 
 export const Sidebar = () => {
     return (

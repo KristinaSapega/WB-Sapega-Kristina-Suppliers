@@ -1,16 +1,19 @@
-import { FiMoreVertical } from "react-icons/fi";
+import { FiMoreVertical } from "react-icons/fi"
 //import { mockDeliveries } from "../../mock/data";
-import styles from "./DeliveryTable.module.css";
-import { useEffect, useState } from "react";
-import { getDeliveries } from "../../services/deliveries";
-import { Delivery } from "../../types/Delivery";
-import { DropdownMenu } from "../Dropdown/DropdownMenu";
+import styles from "./DeliveryTable.module.css"
+import { useEffect, useState } from "react"
+import { getDeliveries } from "../../services/deliveries"
+import { Delivery } from "../../types/Delivery"
+import { DropdownMenu } from "../Dropdown/DropdownMenu"
+import { EditModal } from "../Modal/EditModal"
 
 
 export const DeliveryTable = () => {
     const [deliveries, setDeliveries] = useState<Delivery[]>([])
     const [loading, setLoading] = useState(true)
     const [dropdown, setDropdown] = useState<number | null>(null)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -62,11 +65,13 @@ export const DeliveryTable = () => {
                         {item.status}
                     </div>
                     <div className={`${styles.menu} ${dropdown === item.id ? styles.active : ''}`}>
-                        <div onClick={() => setDropdown(item.id)}>
+                        <div onClick={() => setDropdown(dropdown === item.id ? null : item.id)}>
                             <FiMoreVertical />
                             {dropdown === item.id && (
                                 <DropdownMenu
                                     onEdit={() => {
+                                        setSelectedDelivery(item)
+                                        setIsModalOpen(true)
                                         setDropdown(null)
                                     }}
                                     onDelete={() => {
@@ -78,6 +83,18 @@ export const DeliveryTable = () => {
                     </div>
                 </div>
             ))}
+            {isModalOpen && selectedDelivery && (
+                <EditModal
+                    delivery={selectedDelivery}
+                    onClose={() => setIsModalOpen(false)}
+                    onSave={(updated) => {
+                        setDeliveries((prev) =>
+                            prev.map((delivery) => (delivery.id === updated.id ? updated : delivery))
+                        )
+                    }}
+                />
+            )}
+
         </div>
     )
 }
