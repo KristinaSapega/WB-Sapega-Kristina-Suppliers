@@ -14,7 +14,7 @@ import { addDelivery } from "../../store/deliveriesSlice"
 
 type Props = {
     onClose: () => void
-    onAdd: (newDelivery: Delivery) => void
+    //onAdd: (newDelivery: Delivery) => void
 }
 
 const cities = ["Москва", "Псков", "Тверь", "Абакан", "Нижний Новгород", "Кострома", "Ярославль"]
@@ -48,6 +48,7 @@ export const CreateModal = ({ onClose }: Props) => {
     const handleSubmit = async () => {
         try {
             const newDelivery = await addDeliveries(form)
+            console.log(newDelivery)
             dispatch(addDelivery(newDelivery))
             onClose()
         } catch (error) {

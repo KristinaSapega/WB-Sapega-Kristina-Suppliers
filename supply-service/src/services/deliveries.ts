@@ -7,9 +7,15 @@ export const getDeliveries = async (): Promise<Delivery[]> => {
 };
 
 export const addDeliveries = async (delivery: Delivery): Promise<Delivery> => {
-    const response = await api.post('/deliveries', delivery)
-    return response.data
-};
+    const response = await api.post('/deliveries', {
+        ...delivery,
+        id: delivery.id.toString(),
+      })
+      return {
+        ...response.data,
+        id: Number(response.data.id),
+      }
+    }
 
 export const deleteDeliveries = async (id: number): Promise<void> => {
     const response = await api.delete(`/deliveries/${id}`)

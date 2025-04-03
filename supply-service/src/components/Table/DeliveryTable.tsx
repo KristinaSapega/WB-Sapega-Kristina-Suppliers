@@ -2,13 +2,13 @@ import { FiMoreVertical } from "react-icons/fi"
 //import { mockDeliveries } from "../../mock/data";
 import styles from "./DeliveryTable.module.css"
 import { useEffect, useState } from "react"
-import { getDeliveries } from "../../services/deliveries"
+import { deleteDeliveries, getDeliveries } from "../../services/deliveries"
 import { Delivery } from "../../types/Delivery"
 import { DropdownMenu } from "../Dropdown/DropdownMenu"
 import { EditModal } from "../Modal/EditModal"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/store"
-import { setDeliveries } from "../../store/deliveriesSlice"
+import { removeDelivery, setDeliveries } from "../../store/deliveriesSlice"
 
 
 export const DeliveryTable = () => {
@@ -25,7 +25,8 @@ export const DeliveryTable = () => {
         const fetchData = async () => {
             try {
                 const data = await getDeliveries()
-                dispatch(setDeliveries(data))
+                console.log(data)
+                dispatch(setDeliveries(data.reverse()))
             } catch (error) {
                 console.error("Ошибка при получении поставок", error)
             } finally {
@@ -80,9 +81,15 @@ export const DeliveryTable = () => {
                                         setIsModalOpen(true)
                                         setDropdown(null)
                                     }}
-                                    onDelete={() => {
-                                        setDropdown(null)
-                                    }}
+                                    onDelete={async () => {
+                                        try {
+                                          await deleteDeliveries(item.id)
+                                          dispatch(removeDelivery(item.id))
+                                          setDropdown(null)
+                                        } catch (error) {
+                                          console.error("Ошибка при удалении поставки", error)
+                                        }
+                                      }}
                                 />
                             )}
                         </div>

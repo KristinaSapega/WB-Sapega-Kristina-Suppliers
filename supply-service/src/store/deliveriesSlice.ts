@@ -20,10 +20,19 @@ type DeliveriesState = {
         addDelivery: (state, action: PayloadAction<Delivery>) => {
             state.items = [action.payload, ...state.items];
         },
+
+        removeDelivery: (state, action: PayloadAction<number>) => {
+            state.items = state.items.filter((delivery) => delivery.id !== action.payload)
+        },
     }
 
   })
 
 
-export const { setDeliveries, addDelivery } = deliveriesSlice.actions
+export const { 
+    setDeliveries, 
+    addDelivery, 
+    removeDelivery 
+} = deliveriesSlice.actions
+
 export default deliveriesSlice.reducer
