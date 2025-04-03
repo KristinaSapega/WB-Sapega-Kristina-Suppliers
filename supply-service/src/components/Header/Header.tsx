@@ -1,12 +1,17 @@
+import { useState } from 'react';
 import styles from './Header.module.css';
 import { Plus, Search, ChevronDown } from 'lucide-react';
+import { CreateModal } from '../Modal/CreateModal';
 
 export const Header = () => {
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
+
     return (
+      <>
         <div className={styles.header}>
           <h1 className={styles.title}>Поставки</h1>
           <div className={styles.controls}>
-            <button className={styles.addButton}>
+            <button className={styles.addButton} onClick={() => setIsCreateOpen(true)}>
               <Plus size={20} />
               Добавить поставку
             </button>
@@ -26,5 +31,7 @@ export const Header = () => {
             </div>
           </div>
         </div>
+        {isCreateOpen && <CreateModal onClose={() => setIsCreateOpen(false)} />}
+        </>
       )
 }
