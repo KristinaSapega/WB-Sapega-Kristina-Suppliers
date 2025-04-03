@@ -8,6 +8,8 @@ import { Calendar } from "lucide-react"
 import { ru } from "date-fns/locale"
 import "react-datepicker/dist/react-datepicker.css"
 import { format } from "date-fns"
+import { useDispatch } from "react-redux"
+import { addDelivery } from "../../store/deliveriesSlice"
 
 
 type Props = {
@@ -21,7 +23,7 @@ const warehouses = ["Склад", "СЦ Абакан", "Черная грязь"
 const statuses = ["В пути", "Задерживается"]
 
 
-export const CreateModal = ({ onClose, onAdd }: Props) => {
+export const CreateModal = ({ onClose }: Props) => {
     const [form, setForm] = useState<Delivery>({
         id: Math.floor(Math.random() * 100000),
         date: '',
@@ -37,6 +39,8 @@ export const CreateModal = ({ onClose, onAdd }: Props) => {
     const [date, setDate] = useState<Date | null>(null)
     const [showCalendar, setShowCalendar] = useState(false)
 
+    const dispatch = useDispatch()
+
     const handleChange = (field: keyof Delivery, value: string | number) => {
         setForm((prev) => ({ ...prev, [field]: value }))
     }
@@ -44,7 +48,7 @@ export const CreateModal = ({ onClose, onAdd }: Props) => {
     const handleSubmit = async () => {
         try {
             const newDelivery = await addDeliveries(form)
-            onAdd(newDelivery)
+            dispatch(addDelivery(newDelivery))
             onClose()
         } catch (error) {
             console.error("Ошибка при создании", error)

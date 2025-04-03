@@ -6,20 +6,26 @@ import { getDeliveries } from "../../services/deliveries"
 import { Delivery } from "../../types/Delivery"
 import { DropdownMenu } from "../Dropdown/DropdownMenu"
 import { EditModal } from "../Modal/EditModal"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../store/store"
+import { setDeliveries } from "../../store/deliveriesSlice"
 
 
 export const DeliveryTable = () => {
-    const [deliveries, setDeliveries] = useState<Delivery[]>([])
+    //const [deliveries, setDeliveries] = useState<Delivery[]>([])
     const [loading, setLoading] = useState(true)
     const [dropdown, setDropdown] = useState<number | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null)
 
+    const deliveries = useSelector((state: RootState) => state.deliveries.items)
+    const dispatch = useDispatch()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await getDeliveries()
-                setDeliveries(data)
+                dispatch(setDeliveries(data))
             } catch (error) {
                 console.error("Ошибка при получении поставок", error)
             } finally {
@@ -28,7 +34,7 @@ export const DeliveryTable = () => {
         }
 
         fetchData()
-    }, [])
+    }, [dispatch])
 
     if (loading) return <p>Загрузка...</p>
 
@@ -88,8 +94,12 @@ export const DeliveryTable = () => {
                     delivery={selectedDelivery}
                     onClose={() => setIsModalOpen(false)}
                     onSave={(updated) => {
-                        setDeliveries((prev) =>
-                            prev.map((delivery) => (delivery.id === updated.id ? updated : delivery))
+                        dispatch(
+                            setDeliveries(
+                                deliveries.map((delivery) =>
+                                    delivery.id === updated.id ? updated : delivery
+                                )
+                            )
                         )
                     }}
                 />
