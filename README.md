@@ -25,8 +25,8 @@ npm install
 npx json-server --watch db.json --port 4000
 ```
 
-### API будет доступен по адресу:
-### http://localhost:4000/deliveries
+#### API будет доступен по адресу:
+#### http://localhost:4000/deliveries
 
 ### 4. Запуск проекта
 ```bash
