@@ -8,11 +8,13 @@ import { Calendar } from "lucide-react"
 import { ru } from "date-fns/locale"
 import "react-datepicker/dist/react-datepicker.css"
 import { format } from "date-fns"
+import { useDispatch } from "react-redux"
+import { addDelivery } from "../../store/deliveriesSlice"
 
 
 type Props = {
     onClose: () => void
-    onAdd: (newDelivery: Delivery) => void
+    //onAdd: (newDelivery: Delivery) => void
 }
 
 const cities = ["Москва", "Псков", "Тверь", "Абакан", "Нижний Новгород", "Кострома", "Ярославль"]
@@ -20,8 +22,18 @@ const types = ["Короб", "Монопаллета"]
 const warehouses = ["Склад", "СЦ Абакан", "Черная грязь", "Внуково", "Белая дача", "Электросталь", "Вёшки"]
 const statuses = ["В пути", "Задерживается"]
 
+const generateRandomAddress = (city: string): string => {
+    const streets = [
+      "Ленина", "Чернышевского", "Победы", "Советская", "Кирова", "Мира", "Пушкина", "Жукова"
+    ]
+    const street = streets[Math.floor(Math.random() * streets.length)]
+    const houseNumber = Math.floor(Math.random() * 100) + 1
+    return `${city}, ул. ${street}, д. ${houseNumber}`
+  }
+  
 
-export const CreateModal = ({ onClose, onAdd }: Props) => {
+
+export const CreateModal = ({ onClose }: Props) => {
     const [form, setForm] = useState<Delivery>({
         id: Math.floor(Math.random() * 100000),
         date: '',
@@ -29,13 +41,15 @@ export const CreateModal = ({ onClose, onAdd }: Props) => {
         amount: 0,
         type: 'Короб',
         warehouse: 'Склад',
-        address: '—',
+        address: generateRandomAddress('Москва'),
         status: 'В пути',
 
     })
 
     const [date, setDate] = useState<Date | null>(null)
     const [showCalendar, setShowCalendar] = useState(false)
+
+    const dispatch = useDispatch()
 
     const handleChange = (field: keyof Delivery, value: string | number) => {
         setForm((prev) => ({ ...prev, [field]: value }))
@@ -44,7 +58,8 @@ export const CreateModal = ({ onClose, onAdd }: Props) => {
     const handleSubmit = async () => {
         try {
             const newDelivery = await addDeliveries(form)
-            onAdd(newDelivery)
+            console.log(newDelivery)
+            dispatch(addDelivery(newDelivery))
             onClose()
         } catch (error) {
             console.error("Ошибка при создании", error)

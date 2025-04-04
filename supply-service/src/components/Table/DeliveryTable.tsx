@@ -2,24 +2,34 @@ import { FiMoreVertical } from "react-icons/fi"
 //import { mockDeliveries } from "../../mock/data";
 import styles from "./DeliveryTable.module.css"
 import { useEffect, useState } from "react"
-import { getDeliveries } from "../../services/deliveries"
+import { deleteDeliveries, getDeliveries } from "../../services/deliveries"
 import { Delivery } from "../../types/Delivery"
 import { DropdownMenu } from "../Dropdown/DropdownMenu"
 import { EditModal } from "../Modal/EditModal"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "../../store/store"
+import { removeDelivery, setDeliveries } from "../../store/deliveriesSlice"
+import pen from "../../assets/pen.svg"
+
+
 
 
 export const DeliveryTable = () => {
-    const [deliveries, setDeliveries] = useState<Delivery[]>([])
+    //const [deliveries, setDeliveries] = useState<Delivery[]>([])
     const [loading, setLoading] = useState(true)
     const [dropdown, setDropdown] = useState<number | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedDelivery, setSelectedDelivery] = useState<Delivery | null>(null)
 
+    const deliveries = useSelector((state: RootState) => state.deliveries.items)
+    const dispatch = useDispatch()
+
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await getDeliveries()
-                setDeliveries(data)
+                console.log(data)
+                dispatch(setDeliveries(data.reverse()))
             } catch (error) {
                 console.error("Ошибка при получении поставок", error)
             } finally {
@@ -28,7 +38,7 @@ export const DeliveryTable = () => {
         }
 
         fetchData()
-    }, [])
+    }, [dispatch])
 
     if (loading) return <p>Загрузка...</p>
 
@@ -66,7 +76,8 @@ export const DeliveryTable = () => {
                     </div>
                     <div className={`${styles.menu} ${dropdown === item.id ? styles.active : ''}`}>
                         <div onClick={() => setDropdown(dropdown === item.id ? null : item.id)}>
-                            <FiMoreVertical />
+                            <FiMoreVertical className={styles.menuDots} />
+                            <img src={pen} alt="pen" className={styles.menuEdit} />
                             {dropdown === item.id && (
                                 <DropdownMenu
                                     onEdit={() => {
@@ -74,8 +85,14 @@ export const DeliveryTable = () => {
                                         setIsModalOpen(true)
                                         setDropdown(null)
                                     }}
-                                    onDelete={() => {
-                                        setDropdown(null)
+                                    onDelete={async () => {
+                                        try {
+                                            await deleteDeliveries(item.id)
+                                            dispatch(removeDelivery(item.id))
+                                            setDropdown(null)
+                                        } catch (error) {
+                                            console.error("Ошибка при удалении поставки", error)
+                                        }
                                     }}
                                 />
                             )}
@@ -88,8 +105,12 @@ export const DeliveryTable = () => {
                     delivery={selectedDelivery}
                     onClose={() => setIsModalOpen(false)}
                     onSave={(updated) => {
-                        setDeliveries((prev) =>
-                            prev.map((delivery) => (delivery.id === updated.id ? updated : delivery))
+                        dispatch(
+                            setDeliveries(
+                                deliveries.map((delivery) =>
+                                    delivery.id === updated.id ? updated : delivery
+                                )
+                            )
                         )
                     }}
                 />

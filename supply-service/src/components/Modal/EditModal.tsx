@@ -81,7 +81,7 @@ export const EditModal = ({ delivery, onClose, onSave }: Props) => {
                                 id="amount"
                                 className={styles.input}
                                 type="number"
-                                value={form.amount}
+                                value={form.amount === 0 ? '' : form.amount}
                                 onChange={(e) => handleChange("amount", +e.target.value)}
                             />
                             <span className={styles.unit}>шт.</span>

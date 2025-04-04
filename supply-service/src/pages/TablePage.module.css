@@ -22,3 +22,16 @@
     height: 92px;
     padding-left: 12px;
 }
+
+@media (max-width: 480px) {
+    .content {
+        padding: 12px;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .topRow {
+        height: auto;
+        padding-left: 0;
+    }
+}
