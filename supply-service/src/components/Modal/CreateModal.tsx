@@ -22,6 +22,16 @@ const types = ["Короб", "Монопаллета"]
 const warehouses = ["Склад", "СЦ Абакан", "Черная грязь", "Внуково", "Белая дача", "Электросталь", "Вёшки"]
 const statuses = ["В пути", "Задерживается"]
 
+const generateRandomAddress = (city: string): string => {
+    const streets = [
+      "Ленина", "Чернышевского", "Победы", "Советская", "Кирова", "Мира", "Пушкина", "Жукова"
+    ]
+    const street = streets[Math.floor(Math.random() * streets.length)]
+    const houseNumber = Math.floor(Math.random() * 100) + 1
+    return `${city}, ул. ${street}, д. ${houseNumber}`
+  }
+  
+
 
 export const CreateModal = ({ onClose }: Props) => {
     const [form, setForm] = useState<Delivery>({
@@ -31,7 +41,7 @@ export const CreateModal = ({ onClose }: Props) => {
         amount: 0,
         type: 'Короб',
         warehouse: 'Склад',
-        address: '—',
+        address: generateRandomAddress('Москва'),
         status: 'В пути',
 
     })
