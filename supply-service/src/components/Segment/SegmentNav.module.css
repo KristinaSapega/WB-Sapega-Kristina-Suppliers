@@ -32,3 +32,9 @@
   color: #2D2C32;
   font-weight: 600;
 }
+
+@media (max-width: 480px) {
+  .nav {
+    display: none;
+  }
+}

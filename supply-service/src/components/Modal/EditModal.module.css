@@ -164,3 +164,37 @@
   background-color: #FFFFFF14;
   border: 1px solid #FFFFFF14;
 }
+
+@media (max-width: 480px) {
+  .modal {
+
+    padding: 24px 16px;
+    width: 343px;
+
+  }
+
+  .form,
+  .actions,
+  .title {
+    width: 100%;
+  }
+
+  .title {
+    font-size: 20px;
+    height: auto;
+  }
+
+  .input,
+  .select,
+  .dateInput {
+    font-size: 15px;
+    height: 42px;
+  }
+
+  .saveBtn,
+  .cancelBtn {
+    width: 100%;
+  }
+
+
+}

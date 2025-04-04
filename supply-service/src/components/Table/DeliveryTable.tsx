@@ -9,6 +9,9 @@ import { EditModal } from "../Modal/EditModal"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/store"
 import { removeDelivery, setDeliveries } from "../../store/deliveriesSlice"
+import pen from "../../assets/pen.svg"
+
+
 
 
 export const DeliveryTable = () => {
@@ -73,7 +76,8 @@ export const DeliveryTable = () => {
                     </div>
                     <div className={`${styles.menu} ${dropdown === item.id ? styles.active : ''}`}>
                         <div onClick={() => setDropdown(dropdown === item.id ? null : item.id)}>
-                            <FiMoreVertical />
+                            <FiMoreVertical className={styles.menuDots} />
+                            <img src={pen} alt="pen" className={styles.menuEdit} />
                             {dropdown === item.id && (
                                 <DropdownMenu
                                     onEdit={() => {
@@ -83,13 +87,13 @@ export const DeliveryTable = () => {
                                     }}
                                     onDelete={async () => {
                                         try {
-                                          await deleteDeliveries(item.id)
-                                          dispatch(removeDelivery(item.id))
-                                          setDropdown(null)
+                                            await deleteDeliveries(item.id)
+                                            dispatch(removeDelivery(item.id))
+                                            setDropdown(null)
                                         } catch (error) {
-                                          console.error("Ошибка при удалении поставки", error)
+                                            console.error("Ошибка при удалении поставки", error)
                                         }
-                                      }}
+                                    }}
                                 />
                             )}
                         </div>
